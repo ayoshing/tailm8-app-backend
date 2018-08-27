@@ -1,0 +1,26 @@
+{
+  "name": "tailm8-app-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ayoshing/tailm8-app-backend.git"
+  },
+  "author": "Shing",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ayoshing/tailm8-app-backend/issues"
+  },
+  "homepage": "https://github.com/ayoshing/tailm8-app-backend#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "mongoose": "^5.2.10",
+    "nodemon": "^1.18.3"
+  }
+}
