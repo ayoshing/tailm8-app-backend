@@ -13,8 +13,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // Routes
 const users = require('./routes/api/users.route');
+const profile = require('./routes/api/profile.route');
+
 app.get('/', (req, res) => res.json({msg: "Working"}));
-app.use('/api/users', users)
+app.use('/api/users', users);
+app.use('/api/profile', profile);
 
 // Server
 const port = process.env.PORT || 3001;

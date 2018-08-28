@@ -4,6 +4,23 @@ exports.test = (req, res) => {
   res.send('Testing');
 }
 
+exports.getAllUsers = (req, res) => {
+  User.find()
+    .then(users => {
+      let userMap = users.map(user => {
+        return {
+          name: user.name,
+          email: user.email,
+          accountType: user.accountType,
+          date: user.date
+        }
+      })
+
+      res.json(userMap)
+    })
+    .catch(err => console.log(err));
+}
+
 exports.createUser = (req, res) => {
   let newUser = new User({
     name: req.body.name,
