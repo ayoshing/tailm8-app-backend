@@ -5,6 +5,7 @@ const passport = require('passport');
 
 const users = require('./routes/api/users.route');
 const profile = require('./routes/api/profile.route');
+const posts = require('./routes/api/posts.route');
 
 // MongoDB connection
 const mongoDB = process.env.MONGODB_URI || require('./config/keys').mongoURI;
@@ -22,6 +23,7 @@ require('./config/passport')(passport);
 // Routes
 app.use('/api/users', users);
 app.use('/api/profile', profile);
+app.use('/api/posts', posts);
 
 // Server
 const port = process.env.PORT || 3001;
