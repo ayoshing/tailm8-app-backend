@@ -1,7 +1,11 @@
 const User = require('../models/User');
+const passport = require('passport');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const keys = require('../config/keys')
 
 exports.test = (req, res) => {
-  res.send('Testing');
+  res.send('user route test');
 }
 
 exports.getAllUsers = (req, res) => {
@@ -22,15 +26,29 @@ exports.getAllUsers = (req, res) => {
 }
 
 exports.createUser = (req, res) => {
+  let error = {};
+  User.findOne({ email: req.body.email })
+    .then(user => {
+      if(user) {
+        error = 'Email already exists';
+        return res.status(400).json(error);
+      }
+    })
   let newUser = new User({
     name: req.body.name,
     email: req.body.email,
     password: req.body.password
   });
 
-  newUser.save()
-    .then(user => res.json(user))
-    .catch(err => console.log(err));
+  bcrypt.genSalt(10, (err, salt) => {
+    bcrypt.hash(newUser.password, salt, (err, hash) => {
+      newUser.password = hash;
+      newUser.save()
+        .then(user => res.json(user))
+        .catch(err => console.log(err));
+    })
+  })
+
 }
 
 exports.getUser = (req, res) => {
@@ -61,4 +79,9 @@ exports.deleteUser = (req, res) => {
     if(err) return next(err);
     res.send('Successfully Deleted User')
   })
+}
+
+// Private route to retrieve current user
+exports.getCurrentUser = (req, res) => {
+
 }

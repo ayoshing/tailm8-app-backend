@@ -24,10 +24,7 @@ const ProfileSchema = new Schema({
   location: {
     type: String
   },
-  followers: {
-    type: [String]
-  },
-  following: {
+  friends: {
     type: [String]
   },
   website: {
