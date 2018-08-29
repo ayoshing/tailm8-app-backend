@@ -1,15 +1,16 @@
 const express = require('express');
 const router = express.Router();
+const passport = require('passport');
 
 const userController = require('../../controllers/users.controller');
 
 router.get('/test', userController.test);
 router.post('/register', userController.createUser);
 router.post('/login', userController.logInUser);
-// router.delete('/:id', userController.deleteUser);
-// router.put('/:id', userController.updateUser);
-// router.get('/:id', userController.getUser);
-// router.get('/all', userController.getAllUsers);
-// router.get('/current', userController.getCurrentUser);
+
+// Private routes
+router.get('/current', userController.getCurrentUser);
+// router.delete('/delete', userController.deleteUser);
+// router.put('/udpate', userController.updateUser);
 
 module.exports = router;
