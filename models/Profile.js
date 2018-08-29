@@ -24,9 +24,6 @@ const ProfileSchema = new Schema({
   location: {
     type: String
   },
-  friends: {
-    type: [String]
-  },
   website: {
     type: String
   },
