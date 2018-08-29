@@ -122,6 +122,6 @@ exports.logInUser = (req, res) => {
 // }
 
 // Private route to retrieve current user
-exports.getCurrentUser = (req, res) => {
-
-}
+// exports.getCurrentUser = (req, res) => {
+//   User.findOne(req.user).then(user => res.json(user))
+// }

@@ -9,7 +9,7 @@ router.post('/register', userController.createUser);
 router.post('/login', userController.logInUser);
 
 // Private routes
-router.get('/current', userController.getCurrentUser);
+// router.get('/current', passport.authenticate('jwt', { session: false }), userController.getCurrentUser);
 // router.delete('/delete', userController.deleteUser);
 // router.put('/udpate', userController.updateUser);
 
