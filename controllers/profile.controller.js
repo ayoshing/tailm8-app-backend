@@ -2,10 +2,6 @@ const passport = require("passport");
 const Profile = require("../models/Profile");
 const User = require("../models/User");
 
-exports.test = (req, res) => {
-  res.send("profile route test");
-};
-
 exports.createOrUpdateProfile = (req, res) => {
   let profileFields = {};
   profileFields.social = {};
