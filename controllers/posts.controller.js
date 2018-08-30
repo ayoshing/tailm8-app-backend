@@ -12,7 +12,7 @@ exports.createPost = (req, res) => {
 
   Profile.findOne({ user: req.user.id }).then(profile => {
     if (profile) {
-      postFields.name = profile.petName;
+      postFields.userName = profile.userName;
     } else {
       postFields.name = req.user.name;
     }
@@ -46,5 +46,45 @@ exports.updatePost = (req, res) => {
 exports.deletePost = (req, res) => {
   Post.findById(req.params.id).then(post => {
     Post.findOneAndDelete({ user: req.user.id }).then(post => res.json(post));
+  });
+};
+
+// Likes route functions
+exports.getPostLikes = (req, res) => {
+  Post.findById(req.params.id).then(post => {
+    res.json(post.likes);
+  });
+};
+
+exports.addLikeToPost = (req, res) => {
+  Profile.findOne({ user: req.user.id }).then(profile => {
+    if (profile) {
+      let likeFields = {};
+      likeFields.user = req.user.id;
+      likeFields.userName = profile.userName;
+
+      console.log("WORKING");
+
+      // Post.findOne({ _id: req.params.id }).then(post => res.json(post));
+
+      Post.findOneAndUpdate(
+        { _id: req.params.id },
+        { $push: { likes: likeFields } },
+        { new: true }
+      )
+        .then(post => res.json(post))
+        .catch(err => console.log(err));
+    } else {
+      res.json({ msg: "user does not have a profile" });
+    }
+  });
+};
+
+exports.removeLikeFromPost = (req, res) => {};
+
+// Comments route functions
+exports.getPostComments = (req, res) => {
+  Post.findById(req.params.id).then(post => {
+    res.json(post.comments);
   });
 };

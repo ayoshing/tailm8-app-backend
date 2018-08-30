@@ -20,4 +20,15 @@ router.delete(
   postController.deletePost
 );
 
+// Likes routes
+router.get("/:id/likes", postController.getPostLikes);
+router.post(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  postController.addLikeToPost
+);
+router.delete("/:id", postController.removeLikeFromPost);
+
+// Comments routes
+router.get("/:id/comments", postController.getPostComments);
 module.exports = router;
