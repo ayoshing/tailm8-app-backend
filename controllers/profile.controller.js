@@ -43,3 +43,13 @@ exports.createOrUpdateProfile = (req, res) => {
     }
   });
 };
+
+exports.getAllProfiles = (req, res) => {
+  Profile.find().then(profiles => res.json(profiles));
+};
+
+exports.getUserProfile = (req, res) => {
+  User.findById(req.params.user_id).then(user => {
+    res.json({ id: user.id, name: user.name, email: user.email });
+  });
+};
