@@ -1,29 +1,32 @@
-const app = require('express')();
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const passport = require('passport');
+const app = require("express")();
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+const passport = require("passport");
 
-const users = require('./routes/api/users.route');
-const profile = require('./routes/api/profile.route');
-const posts = require('./routes/api/posts.route');
+const users = require("./routes/api/users.route");
+const profile = require("./routes/api/profile.route");
+const posts = require("./routes/api/posts.route");
 
 // MongoDB connection
-const mongoDB = process.env.MONGODB_URI || require('./config/keys').mongoURI;
+const mongoDB = process.env.MONGODB_URI || require("./config/keys").mongoURI;
 
-mongoose.connect(mongoDB, { useNewUrlParser: true });
+mongoose.connect(
+  mongoDB,
+  { useNewUrlParser: true }
+);
 
 // Body parser middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Passport auth middleware
-app.use(passport.initialize())
-require('./config/passport')(passport);
+app.use(passport.initialize());
+require("./config/passport")(passport);
 
 // Routes
-app.use('/api/users', users);
-app.use('/api/profile', profile);
-app.use('/api/posts', posts);
+app.use("/api/users", users);
+app.use("/api/profile", profile);
+app.use("/api/posts", posts);
 
 // Server
 const port = process.env.PORT || 3001;
