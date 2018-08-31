@@ -49,59 +49,59 @@ exports.deletePost = (req, res) => {
   });
 };
 
-// Likes route functions
-exports.getPostLikes = (req, res) => {
-  Post.findById(req.params.id).then(post => {
-    res.json(post.likes);
-  });
-};
+// // Likes route functions
+// exports.getPostLikes = (req, res) => {
+//   Post.findById(req.params.id).then(post => {
+//     res.json(post.likes);
+//   });
+// };
+//
+// exports.addLikeToPost = (req, res) => {
+//   Profile.findOne({ user: req.user.id }).then(profile => {
+//     if (profile) {
+//       let likeFields = {};
+//       likeFields.user = req.user.id;
+//       likeFields.userName = profile.userName;
+//
+//       Post.findOneAndUpdate(
+//         { _id: req.params.id },
+//         { $push: { likes: likeFields } },
+//         { new: true }
+//       )
+//         .then(post => res.json(post))
+//         .catch(err => console.log(err));
+//     } else {
+//       res.json({ msg: "user does not have a profile" });
+//     }
+//   });
+// };
+//
+// exports.removeLikeFromPost = (req, res) => {};
 
-exports.addLikeToPost = (req, res) => {
-  Profile.findOne({ user: req.user.id }).then(profile => {
-    if (profile) {
-      let likeFields = {};
-      likeFields.user = req.user.id;
-      likeFields.userName = profile.userName;
-
-      Post.findOneAndUpdate(
-        { _id: req.params.id },
-        { $push: { likes: likeFields } },
-        { new: true }
-      )
-        .then(post => res.json(post))
-        .catch(err => console.log(err));
-    } else {
-      res.json({ msg: "user does not have a profile" });
-    }
-  });
-};
-
-exports.removeLikeFromPost = (req, res) => {};
-
-// Comments route functions
-exports.getPostComments = (req, res) => {
-  Post.findById(req.params.id).then(post => {
-    res.json(post.comments);
-  });
-};
-
-exports.addCommentToPost = (req, res) => {
-  Profile.findOne({ user: req.user.id }).then(profile => {
-    if (profile) {
-      let commentFields = {};
-      commentFields.user = req.user.idea;
-      commentFields.userName = profile.userName;
-      commentFields.content = req.body.content;
-
-      Post.findOneAndUpdate(
-        { _id: req.params.id },
-        { $push: { comments: commentFields } },
-        { new: true }
-      )
-        .then(post => res.json(post))
-        .catch(err => console.log(err));
-    } else {
-      res.json({ msg: "user does not have a profile" });
-    }
-  });
-};
+// // Comments route functions
+// exports.getPostComments = (req, res) => {
+//   Post.findById(req.params.id).then(post => {
+//     res.json(post.comments);
+//   });
+// };
+//
+// exports.addCommentToPost = (req, res) => {
+//   Profile.findOne({ user: req.user.id }).then(profile => {
+//     if (profile) {
+//       let commentFields = {};
+//       commentFields.user = req.user.idea;
+//       commentFields.userName = profile.userName;
+//       commentFields.content = req.body.content;
+//
+//       Post.findOneAndUpdate(
+//         { _id: req.params.id },
+//         { $push: { comments: commentFields } },
+//         { new: true }
+//       )
+//         .then(post => res.json(post))
+//         .catch(err => console.log(err));
+//     } else {
+//       res.json({ msg: "user does not have a profile" });
+//     }
+//   });
+// };
