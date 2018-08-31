@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const Post = require("../models/Post");
 const Profile = require("../models/Profile");
 
-// Comments route functions
+// Route '/api/posts/:id/comments'
 exports.getPostComments = (req, res) => {
   Post.findById(req.params.id).then(post => {
     res.json(post.comments);

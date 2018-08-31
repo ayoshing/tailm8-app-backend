@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const Post = require("../models/Post");
 const Profile = require("../models/Profile");
 
-// Likes route functions
+// Route '/api/posts/:id/likes'
 exports.getPostLikes = (req, res) => {
   Post.findById(req.params.id).then(post => {
     res.json(post.likes);
@@ -30,4 +30,18 @@ exports.addLikeToPost = (req, res) => {
   });
 };
 
-exports.removeLikeFromPost = (req, res) => {};
+exports.removeLikeFromPost = (req, res) => {
+  Profile.findOne({ user: req.user.id }).then(profile => {
+    if (profile) {
+      Post.findOneAndUpdate(
+        { _id: req.params.id },
+        { $pull: { likes: { user: req.user.id } } },
+        { new: true }
+      )
+        .then(post => res.json(post))
+        .catch(err => console.log(err));
+    } else {
+      res.json({ msg: "the post has been removed or does not exist anymore" });
+    }
+  });
+};

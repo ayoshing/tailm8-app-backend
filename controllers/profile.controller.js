@@ -2,6 +2,8 @@ const passport = require("passport");
 const Profile = require("../models/Profile");
 const User = require("../models/User");
 
+// Route '/api/profile'
+
 exports.createOrUpdateProfile = (req, res) => {
   let profileFields = {};
   profileFields.social = {};

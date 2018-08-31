@@ -4,6 +4,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const keys = require("../config/keys");
 
+// Route '/api/users'
+
 exports.createUser = (req, res) => {
   let error = {};
   let name = req.body.name;
