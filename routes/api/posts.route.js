@@ -23,7 +23,7 @@ router.delete(
 // Likes routes
 router.get("/:id/likes", postController.getPostLikes);
 router.post(
-  "/:id",
+  "/:id/like",
   passport.authenticate("jwt", { session: false }),
   postController.addLikeToPost
 );
@@ -32,3 +32,8 @@ router.delete("/:id", postController.removeLikeFromPost);
 // Comments routes
 router.get("/:id/comments", postController.getPostComments);
 module.exports = router;
+router.post(
+  "/:id/comment",
+  passport.authenticate("jwt", { session: false }),
+  postController.addCommentToPost
+);

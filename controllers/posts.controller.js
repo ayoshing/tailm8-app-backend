@@ -63,10 +63,6 @@ exports.addLikeToPost = (req, res) => {
       likeFields.user = req.user.id;
       likeFields.userName = profile.userName;
 
-      console.log("WORKING");
-
-      // Post.findOne({ _id: req.params.id }).then(post => res.json(post));
-
       Post.findOneAndUpdate(
         { _id: req.params.id },
         { $push: { likes: likeFields } },
@@ -86,5 +82,26 @@ exports.removeLikeFromPost = (req, res) => {};
 exports.getPostComments = (req, res) => {
   Post.findById(req.params.id).then(post => {
     res.json(post.comments);
+  });
+};
+
+exports.addCommentToPost = (req, res) => {
+  Profile.findOne({ user: req.user.id }).then(profile => {
+    if (profile) {
+      let commentFields = {};
+      commentFields.user = req.user.idea;
+      commentFields.userName = profile.userName;
+      commentFields.content = req.body.content;
+
+      Post.findOneAndUpdate(
+        { _id: req.params.id },
+        { $push: { comments: commentFields } },
+        { new: true }
+      )
+        .then(post => res.json(post))
+        .catch(err => console.log(err));
+    } else {
+      res.json({ msg: "user does not have a profile" });
+    }
   });
 };
