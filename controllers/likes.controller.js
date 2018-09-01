@@ -3,9 +3,9 @@ const mongoose = require("mongoose");
 const Post = require("../models/Post");
 const Profile = require("../models/Profile");
 
-// Route '/api/posts/:id/likes'
+// Route '/api/posts/:post_id/likes'
 exports.getPostLikes = (req, res) => {
-  Post.findById(req.params.id).then(post => {
+  Post.findById(req.params.post_id).then(post => {
     res.json(post.likes);
   });
 };
@@ -18,14 +18,14 @@ exports.addLikeToPost = (req, res) => {
       likeFields.userName = profile.userName;
 
       Post.findOneAndUpdate(
-        { _id: req.params.id },
+        { _id: req.params.post_id },
         { $push: { likes: likeFields } },
         { new: true }
       )
         .then(post => res.json(post))
         .catch(err => console.log(err));
     } else {
-      res.json({ msg: "user does not have a profile" });
+      res.json({ msg: "no profile" });
     }
   });
 };
@@ -34,14 +34,14 @@ exports.removeLikeFromPost = (req, res) => {
   Profile.findOne({ user: req.user.id }).then(profile => {
     if (profile) {
       Post.findOneAndUpdate(
-        { _id: req.params.id },
+        { _id: req.params.post_id },
         { $pull: { likes: { user: req.user.id } } },
         { new: true }
       )
         .then(post => res.json(post))
         .catch(err => console.log(err));
     } else {
-      res.json({ msg: "the post has been removed or does not exist anymore" });
+      res.json({ msg: "no profile" });
     }
   });
 };
