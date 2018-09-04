@@ -4,8 +4,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const keys = require("../config/keys");
 
-// Route '/api/users'
-
+// Route '/'
 exports.createUser = (req, res) => {
   let error = {};
   let name = req.body.name;
@@ -29,6 +28,7 @@ exports.createUser = (req, res) => {
 
   bcrypt.genSalt(10, (err, salt) => {
     bcrypt.hash(newUser.password, salt, (err, hash) => {
+      if(err) throw err;
       newUser.password = hash;
       newUser
         .save()
@@ -38,6 +38,7 @@ exports.createUser = (req, res) => {
   });
 };
 
+// Route '/login'
 exports.logInUser = (req, res) => {
   let error = {};
   let email = req.body.email;

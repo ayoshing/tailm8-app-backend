@@ -2,6 +2,7 @@ const app = require("express")();
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const passport = require("passport");
+const cors = require("cors");
 
 const users = require("./routes/api/users.route");
 const profile = require("./routes/api/profile.route");
@@ -25,6 +26,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(passport.initialize());
 require("./config/passport")(passport);
 
+// CORS middleware (enable all CORS requests)
+app.use(cors());
+
 // Routes
 app.use("/api/users", users);
 app.use("/api/profile", profile);
@@ -33,4 +37,4 @@ app.use("/api/posts", posts, likes, comments);
 // Server
 const port = process.env.PORT || 3001;
 
-app.listen(port, () => console.log(`Server is running on port ${port}`));
+app.listen(port, () => console.log(`CORS-enabled server is running on port ${port}`));
