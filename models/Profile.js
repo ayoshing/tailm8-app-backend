@@ -9,8 +9,8 @@ const ProfileSchema = new Schema({
   userName: {
     type: String
   },
-  age: {
-    type: Number
+  birthday: {
+    type: Date
   },
   breed: {
     type: String
@@ -40,7 +40,23 @@ const ProfileSchema = new Schema({
     twitter: {
       type: String
     }
-  }
+  },
+  friends: [
+    {
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: "User"
+      },
+      status: {
+        type: String,
+        required: true
+      },
+      date: {
+        type: Date,
+        default: Date.now
+      }
+    }
+  ]
 });
 
 module.exports = mongoose.model("Profile", ProfileSchema);

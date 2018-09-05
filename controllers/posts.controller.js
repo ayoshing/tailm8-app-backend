@@ -4,7 +4,22 @@ const Post = require("../models/Post");
 const User = require("../models/User");
 const Profile = require("../models/Profile");
 
-// Route '/api/posts'
+// Public Route: 'api/posts'
+exports.getPosts = (req, res) => {
+  Post.find()
+    .sort({ date: -1 })
+    .then(posts => res.json(posts))
+    .catch(err => res.status(404).json({ notFound: "No Posts" }));
+};
+
+// Public Route: 'api/posts/:post_id'
+exports.getPost = (req, res) => {
+  Post.findById(req.params.post_id)
+    .then(post => res.json(post))
+    .catch(err => res.status(404).json({ notFound: "No Post For This ID" }));
+};
+
+// Private Route: '/api/posts'
 exports.createPost = (req, res) => {
   let postFields = {};
 
@@ -18,20 +33,13 @@ exports.createPost = (req, res) => {
       postFields.name = req.user.name;
     }
 
-    new Post(postFields).save().then(profile => res.json(profile));
+    new Post(postFields).save().then(post => res.json(post));
   });
 };
 
-exports.getPosts = (req, res) => {
-  Post.find().then(posts => res.json(posts));
-};
-
-exports.getPost = (req, res) => {
-  Post.findById(req.params.id).then(post => res.json(post));
-};
-
+// Private Route: 'api/posts/:post_id'
 exports.updatePost = (req, res) => {
-  Post.findById(req.params.id).then(post => {
+  Post.findById(req.params.post_id).then(post => {
     let postFields = {};
 
     postFields.content = req.body.content;
@@ -44,8 +52,13 @@ exports.updatePost = (req, res) => {
   });
 };
 
+// Private Route: 'api/posts/:post_id'
 exports.deletePost = (req, res) => {
-  Post.findById(req.params.id).then(post => {
-    Post.findOneAndDelete({ user: req.user.id }).then(post => res.json(post));
+  Profile.findOne({ user: req.user.id }).then(profile => {
+    Post.findById(req.params.post_id).then(post => {
+      Post.findOneAndDelete({ user: req.user.id })
+        .then(post => res.json(post))
+        .catch(err => res.status(404).json({ notFound: "No Post" }));
+    });
   });
 };

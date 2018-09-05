@@ -4,9 +4,9 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const keys = require("../config/keys");
 
-// Route '/'
+// Public Route: 'api/users'
 exports.createUser = (req, res) => {
-  let error = {};
+  let errors = {};
   let name = req.body.name;
   let email = req.body.email;
   let password = req.body.password;
@@ -14,8 +14,8 @@ exports.createUser = (req, res) => {
 
   User.findOne({ email }).then(user => {
     if (user) {
-      error = "Email already exists";
-      return res.status(400).json(error);
+      errors.email = "Email Already Exists";
+      return res.status(400).json(errors);
     }
   });
 
@@ -28,7 +28,7 @@ exports.createUser = (req, res) => {
 
   bcrypt.genSalt(10, (err, salt) => {
     bcrypt.hash(newUser.password, salt, (err, hash) => {
-      if(err) throw err;
+      if (err) throw err;
       newUser.password = hash;
       newUser
         .save()
@@ -38,16 +38,16 @@ exports.createUser = (req, res) => {
   });
 };
 
-// Route '/login'
+// Public Route: 'api/users/login'
 exports.logInUser = (req, res) => {
-  let error = {};
+  let errors = {};
   let email = req.body.email;
   let password = req.body.password;
 
   User.findOne({ email }).then(user => {
     if (!user) {
-      error = "User not found";
-      return res.status(404).json(error);
+      errors.email = "User Not Found";
+      return res.status(404).json(errors);
     }
 
     bcrypt.compare(password, user.password).then(checkPassword => {
@@ -64,61 +64,18 @@ exports.logInUser = (req, res) => {
           });
         });
       } else {
-        error = "Incorrect password";
-        return res.status(400).json(error);
+        errors.password = "Incorrect Password";
+        return res.status(400).json(errors);
       }
     });
   });
 };
 
-// exports.getAllUsers = (req, res) => {
-//   User.find()
-//     .then(users => {
-//       let userMap = users.map(user => {
-//         return {
-//           name: user.name,
-//           email: user.email,
-//           accountType: user.accountType,
-//           date: user.date
-//         }
-//       })
-//
-//       res.json(userMap)
-//     })
-//     .catch(err => console.log(err));
-// }
-
-// exports.getUser = (req, res) => {
-//   User.findById(req.params.id)
-//     .then(user => res.json({
-//       name: user.name,
-//       email: user.email,
-//       accountType: user.accountType,
-//       date: user.date
-//     }))
-//     .catch(err => console.log(err));
-// }
-
-// // Updates and returns updated user data
-// exports.updateUser = (req, res) => {
-//   User.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true })
-//     .then(user => res.json({
-//       name: user.name,
-//       email: user.email,
-//       accountType: user.accountType,
-//       date: user.date
-//     }))
-//     .catch(err => console.log(err));
-// }
-//
-// exports.deleteUser = (req, res) => {
-//   User.findByIdAndRemove(req.params.id, (err) => {
-//     if(err) return next(err);
-//     res.send('Successfully Deleted User')
-//   })
-// }
-
-// Private route to retrieve current user
-// exports.getCurrentUser = (req, res) => {
-//   User.findOne(req.user).then(user => res.json(user))
-// }
+// Private Route: 'api/users/current'
+exports.getCurrentUser = (req, res) => {
+  res.json({
+    id: req.user.id,
+    name: req.user.name,
+    accountType: req.user.accountType
+  });
+};

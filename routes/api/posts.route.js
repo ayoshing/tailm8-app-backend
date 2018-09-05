@@ -2,20 +2,23 @@ const router = require("express").Router();
 const passport = require("passport");
 const postController = require("../../controllers/posts.controller");
 
+// Public Routes
+router.get("/", postController.getPosts);
+router.get("/:post_id", postController.getPost);
+
+// Private Routes
 router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
   postController.createPost
 );
-router.get("/", postController.getPosts);
-router.get("/:id", postController.getPost);
 router.put(
-  "/:id",
+  "/:post_id",
   passport.authenticate("jwt", { session: false }),
   postController.updatePost
 );
 router.delete(
-  "/:id",
+  "/:post_id",
   passport.authenticate("jwt", { session: false }),
   postController.deletePost
 );
