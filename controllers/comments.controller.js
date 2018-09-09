@@ -3,13 +3,29 @@ const mongoose = require("mongoose");
 const Post = require("../models/Post");
 const Profile = require("../models/Profile");
 
-// Route '/api/posts/:post_id/comments'
+// Public Route: '/api/posts/:post_id/comments'
 exports.getPostComments = (req, res) => {
   Post.findById(req.params.post_id).then(post => {
     res.json(post.comments);
   });
 };
 
+// Public Route: '/api/posts/:post_id/comments/:comment_id'
+exports.getPostComment = (req, res) => {
+  Post.findOne({ _id: req.params.post_id })
+    .then(post => {
+      let userComment = post.comments.find((el, i, arr) => {
+        return el._id.toString() === req.params.comment_id;
+      });
+
+      res.json(userComment);
+    })
+    .catch(err => console.log(err));
+};
+
+// Public Route: '/api/posts/:post_id/comments/:comment_id'
+
+// Private Route: '/api/posts/:post_id/comments'
 exports.addCommentToPost = (req, res) => {
   Profile.findOne({ user: req.user.id }).then(profile => {
     if (profile) {
@@ -31,19 +47,7 @@ exports.addCommentToPost = (req, res) => {
   });
 };
 
-// Route '/api/posts/:post_id/comments/:comment_id'
-exports.getPostComment = (req, res) => {
-  Post.findOne({ _id: req.params.post_id })
-    .then(post => {
-      let userComment = post.comments.find((el, i, arr) => {
-        return el._id.toString() === req.params.comment_id;
-      });
-
-      res.json(userComment);
-    })
-    .catch(err => console.log(err));
-};
-
+// Private Route: '/api/posts/:post_id/comments/:comment_id'
 exports.removeCommentFromPost = (req, res) => {
   Profile.findOne({ user: req.user.id }).then(profile => {
     if (profile) {

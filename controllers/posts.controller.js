@@ -25,6 +25,7 @@ exports.createPost = (req, res) => {
 
   postFields.user = req.user.id;
   postFields.content = req.body.content;
+  postFields.imgUrl = req.body.imgUrl;
 
   Profile.findOne({ user: req.user.id }).then(profile => {
     if (profile) {
