@@ -5,6 +5,7 @@ const profileController = require("../../controllers/profile.controller");
 // Public Routes
 router.get("/users", profileController.getProfiles);
 router.get("/users/:user_id", profileController.getProfile);
+router.get("/:username", profileController.getUserName);
 
 // Private Routes
 router.get(

@@ -3,24 +3,31 @@ const mongoose = require("mongoose");
 const Post = require("../models/Post");
 const User = require("../models/User");
 const Profile = require("../models/Profile");
+const validatePostInput = require("../validations/post.validation");
 
 // Public Route: 'api/posts'
 exports.getPosts = (req, res) => {
   Post.find()
     .sort({ date: -1 })
     .then(posts => res.json(posts))
-    .catch(err => res.status(404).json({ notFound: "No Posts" }));
+    .catch(err => res.status(404).json({ notFound: "Did not find any posts" }));
 };
 
 // Public Route: 'api/posts/:post_id'
 exports.getPost = (req, res) => {
   Post.findById(req.params.post_id)
     .then(post => res.json(post))
-    .catch(err => res.status(404).json({ notFound: "No Post For This ID" }));
+    .catch(err =>
+      res.status(404).json({ notFound: "Did not find post for this ID" })
+    );
 };
 
 // Private Route: '/api/posts'
 exports.createPost = (req, res) => {
+  const { errors, isValid } = validatePostInput(req.body);
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
   let postFields = {};
 
   postFields.user = req.user.id;

@@ -10,7 +10,7 @@ module.exports = function validateSignUpInput(input) {
   input.password2 = !isEmpty(input.password2) ? input.password2 : "";
 
   if (!validator.isLength(input.name, { min: 2, max: 30 })) {
-    errors.name = "Name must be between 2 and 30 charactors";
+    errors.name = "Name must be between 2 and 30 characters";
   }
 
   if (validator.isEmpty(input.name)) {
@@ -21,7 +21,7 @@ module.exports = function validateSignUpInput(input) {
     errors.email = "Email field is required";
   }
 
-  if (validator.isEmail(input.email)) {
+  if (!validator.isEmail(input.email)) {
     errors.email = "Email is invalid";
   }
 
@@ -30,7 +30,7 @@ module.exports = function validateSignUpInput(input) {
   }
 
   if (!validator.isLength(input.password, { min: 6, max: 30 })) {
-    errors.password = "Password must be at least 6 charactors";
+    errors.password = "Password must be at least 6 characters";
   }
 
   if (validator.isEmpty(input.password2)) {
@@ -43,6 +43,6 @@ module.exports = function validateSignUpInput(input) {
 
   return {
     errors,
-    isvalid: isEmpty(errors)
+    isValid: isEmpty(errors)
   };
 };
