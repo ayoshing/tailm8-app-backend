@@ -75,11 +75,8 @@ exports.logInUser = (req, res) => {
             });
           }
         );
-
-        console.log("Check pw");
       } else {
         errors.password = "Password is incorrect";
-        console.log("PW is wrong after jwt.sign");
         return res.status(400).json(errors);
       }
     });

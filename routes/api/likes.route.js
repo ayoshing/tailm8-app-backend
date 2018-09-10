@@ -6,7 +6,7 @@ router.get("/:post_id/likes", likeController.getPostLikes);
 router.post(
   "/:post_id/likes",
   passport.authenticate("jwt", { session: false }),
-  likeController.addLikeToPost
+  likeController.addRemoveLikeToPost
 );
 router.delete(
   "/:post_id/likes",
