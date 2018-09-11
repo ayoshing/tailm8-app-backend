@@ -19,11 +19,11 @@ router.post(
 //   passport.authenticate("jwt", { session: false }),
 //   friendController.acceptFriendRequest
 // );
-//
-// router.delete(
-//   "/:username/unfriend",
-//   passport.authenticate("jwt", { session: false }),
-//   friendController.removeFriend
-// );
+
+router.delete(
+  "/users/:user_id/unfriend",
+  passport.authenticate("jwt", { session: false }),
+  friendController.removeFriend
+);
 
 module.exports = router;
