@@ -65,22 +65,31 @@ exports.logInUser = (req, res) => {
           accountType: user.accountType
         };
 
-        jwt.sign(
-          payload,
-          keys.secretOrKey,
-          { expiresIn: 3600 },
-          (err, token) => {
-            res.json({
-              token: "Bearer " + token
-            });
-          }
-        );
+        jwt.sign(payload, keys.secretOrKey, (err, token) => {
+          res.json({
+            token: "Bearer " + token
+          });
+        });
       } else {
         errors.password = "Password is incorrect";
         return res.status(400).json(errors);
       }
     });
   });
+};
+
+// Public Route: 'api/users'
+exports.getUsers = (req, res) => {
+  let errors = {};
+  User.find()
+    .then(users => {
+      if (!users) {
+        errors.noUser = "There are no users";
+        return res.status(404).json(errors);
+      }
+      res.json(users);
+    })
+    .catch(err => res.status(404).json({ user: "There are no users" }));
 };
 
 // Private Route: 'api/users/current'

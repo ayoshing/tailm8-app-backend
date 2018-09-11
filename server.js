@@ -9,6 +9,7 @@ const profile = require("./routes/api/profile.route");
 const posts = require("./routes/api/posts.route");
 const likes = require("./routes/api/likes.route");
 const comments = require("./routes/api/comments.route");
+const friends = require("./routes/api/friends.route");
 
 // MongoDB connection
 const mongoDB = process.env.MONGODB_URI || require("./config/keys").mongoURI;
@@ -31,10 +32,12 @@ app.use(cors());
 
 // Routes
 app.use("/api/users", users);
-app.use("/api/profile", profile);
+app.use("/api/profile", profile, friends);
 app.use("/api/posts", posts, likes, comments);
 
 // Server
 const port = process.env.PORT || 3001;
 
-app.listen(port, () => console.log(`CORS-enabled server is running on port ${port}`));
+app.listen(port, () =>
+  console.log(`CORS-enabled server is running on port ${port}`)
+);
