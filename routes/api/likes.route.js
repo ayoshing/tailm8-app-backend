@@ -8,10 +8,5 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   likeController.addRemoveLikeToPost
 );
-router.delete(
-  "/:post_id/likes",
-  passport.authenticate("jwt", { session: false }),
-  likeController.removeLikeFromPost
-);
 
 module.exports = router;

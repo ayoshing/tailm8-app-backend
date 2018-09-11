@@ -10,27 +10,6 @@ exports.getPostLikes = (req, res) => {
   });
 };
 
-// Private Route: '/api/posts/:post_id/likes'
-// exports.addLikeToPost = (req, res) => {
-//   Profile.findOne({ user: req.user.id }).then(profile => {
-//     if (profile) {
-//       let likeFields = {};
-//       likeFields.user = req.user.id;
-//       likeFields.userName = profile.userName;
-//
-//       Post.findOneAndUpdate(
-//         { _id: req.params.post_id },
-//         { $push: { likes: likeFields } },
-//         { new: true }
-//       )
-//         .then(post => res.json(post))
-//         .catch(err => console.log(err));
-//     } else {
-//       res.json({ msg: "no profile" });
-//     }
-//   });
-// };
-
 exports.addRemoveLikeToPost = (req, res) => {
   Profile.findOne({ user: req.user.id }).then(profile => {
     if (profile) {
@@ -57,22 +36,6 @@ exports.addRemoveLikeToPost = (req, res) => {
             msg: "Post not found"
           })
         );
-    }
-  });
-};
-
-exports.removeLikeFromPost = (req, res) => {
-  Profile.findOne({ user: req.user.id }).then(profile => {
-    if (profile) {
-      Post.findOneAndUpdate(
-        { _id: req.params.post_id },
-        { $pull: { likes: { user: req.user.id } } },
-        { new: true }
-      )
-        .then(post => res.json(post))
-        .catch(err => console.log(err));
-    } else {
-      res.json({ msg: "Profile not found" });
     }
   });
 };
