@@ -32,10 +32,10 @@ exports.getProfile = (req, res) => {
     );
 };
 
-// Public Route: 'api/profile/:username'
+// Public Route: 'api/profile/users/:username'
 exports.getUserName = (req, res) => {
   let errors = {};
-  Profile.findOne({ userName: req.params.username.toLowerCase() })
+  Profile.findOne({ userNameLowerCase: req.params.username.toLowerCase() })
     .then(profile => {
       if (!profile) {
         errors.noProfile = "There is no profile for this user";
@@ -64,6 +64,7 @@ exports.getCurrentProfile = (req, res) => {
 
 // Private Route: '/api/profile'
 exports.createOrUpdateProfile = (req, res) => {
+  //TODO: check for unique userName
   let profileFields = {};
   profileFields.social = {};
   profileFields.user = req.user.id;
@@ -87,7 +88,7 @@ exports.createOrUpdateProfile = (req, res) => {
     if (profile) {
       Profile.findOneAndUpdate(
         { user: req.user.id },
-        { $set: profileField },
+        { $set: profileFields },
         { new: true }
       ).then(profile => res.json(profile));
     } else {

@@ -4,14 +4,20 @@ const friendController = require("../../controllers/friends.controller");
 
 router.get(
   "/friends",
-  // passport.authenticate("jwt", { session: false }),
+  passport.authenticate("jwt", { session: false }),
   friendController.getFriends
+);
+
+router.post(
+  "/users/:user_id/friend",
+  passport.authenticate("jwt", { session: false }),
+  friendController.sendFriendRequest
 );
 
 // router.post(
 //   "/:username/friend",
 //   passport.authenticate("jwt", { session: false }),
-//   friendController.addFriend
+//   friendController.acceptFriendRequest
 // );
 //
 // router.delete(
