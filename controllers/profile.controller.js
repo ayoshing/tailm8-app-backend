@@ -35,7 +35,7 @@ exports.getProfile = (req, res) => {
 // Public Route: 'api/profile/:username'
 exports.getUserName = (req, res) => {
   let errors = {};
-  Profile.findOne({ userName: req.params.username })
+  Profile.findOne({ userName: req.params.username.toLowerCase() })
     .then(profile => {
       if (!profile) {
         errors.noProfile = "There is no profile for this user";
@@ -50,11 +50,12 @@ exports.getUserName = (req, res) => {
 
 // Private Route: '/api/profile'
 exports.getCurrentProfile = (req, res) => {
+  let errors = {};
   Profile.findOne({ user: req.user.id })
     .then(profile => {
       if (!profile) {
         errors.noProfile = "There is not profile for this user";
-        return res.status(404), json(errors);
+        return res.status(404).json(errors);
       }
       res.json(profile);
     })
@@ -79,6 +80,7 @@ exports.createOrUpdateProfile = (req, res) => {
     } else if (key === "twitter" || key === "facebook" || key === "instagram") {
       profileFields.social[key] = req.body[key];
     }
+    profileFields.userNameLowerCase = req.body.userName.toLowerCase();
   });
 
   Profile.findOne({ user: req.user.id }).then(profile => {

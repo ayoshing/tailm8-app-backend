@@ -9,6 +9,9 @@ const ProfileSchema = new Schema({
   userName: {
     type: String
   },
+  userNameLowerCase: {
+    type: String
+  },
   birthday: {
     type: Date
   },
