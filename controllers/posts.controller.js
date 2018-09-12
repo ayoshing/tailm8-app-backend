@@ -37,6 +37,7 @@ exports.createPost = (req, res) => {
   Profile.findOne({ user: req.user.id }).then(profile => {
     if (profile) {
       postFields.userName = profile.userName;
+      postFields.profile = profile._id;
     } else {
       postFields.name = req.user.name;
     }

@@ -2,6 +2,7 @@ const passport = require("passport");
 const mongoose = require("mongoose");
 const Post = require("../models/Post");
 const Profile = require("../models/Profile");
+const validateCommentInput = require("../validations/comment.validation");
 
 // Public Route: '/api/posts/:post_id/comments'
 exports.getPostComments = (req, res) => {
@@ -27,6 +28,11 @@ exports.getPostComment = (req, res) => {
 
 // Private Route: '/api/posts/:post_id/comments'
 exports.addCommentToPost = (req, res) => {
+  const { errors, isValid } = validateCommentInput(req.body);
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
   Profile.findOne({ user: req.user.id }).then(profile => {
     if (profile) {
       let commentFields = {};
