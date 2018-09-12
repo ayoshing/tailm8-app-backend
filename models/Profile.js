@@ -1,6 +1,13 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+// Friendship management
+const options = {
+  personModelName: "Profile",
+  friendshipModelName: "Friendship"
+};
+const FriendsOfFriends = require("friends-of-friends")(mongoose, options);
+
 const ProfileSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
@@ -43,23 +50,9 @@ const ProfileSchema = new Schema({
     twitter: {
       type: String
     }
-  },
-  friends: [
-    {
-      user: {
-        type: Schema.Types.ObjectId,
-        ref: "User"
-      },
-      status: {
-        type: String,
-        required: true
-      },
-      date: {
-        type: Date,
-        default: Date.now
-      }
-    }
-  ]
+  }
 });
 
-module.exports = mongoose.model("Profile", ProfileSchema);
+ProfileSchema.plugin(FriendsOfFriends.plugin, options);
+
+module.exports = mongoose.model(options.personModelName, ProfileSchema);

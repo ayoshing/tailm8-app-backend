@@ -9,7 +9,7 @@ router.get(
 );
 
 router.post(
-  "/users/:user_id/friend",
+  "/:profile_id/friend",
   passport.authenticate("jwt", { session: false }),
   friendController.sendFriendRequest
 );
@@ -21,7 +21,7 @@ router.post(
 // );
 
 router.delete(
-  "/users/:user_id/unfriend",
+  "/:profile_id/unfriend",
   passport.authenticate("jwt", { session: false }),
   friendController.removeFriend
 );

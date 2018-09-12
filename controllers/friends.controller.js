@@ -17,19 +17,21 @@ exports.getFriends = (req, res) => {
     .catch(err => res.status(404).json(err));
 };
 
-// Private Route: 'api/profile/users/:user_id/friend'
+// Private Route: 'api/profile/:profile_id/friend'
 exports.sendFriendRequest = (req, res) => {
   let errors = {};
 
   Profile.findOne({ user: req.user.id })
     .then(profile => {
       if (profile) {
-        let isFriend = !!profile.friends.find(
-          el => el.user.toString() === req.params.user_id
+        let isFriend = profile.friends.find(
+          el => el.profile.toString() === req.params.profile_id
         );
 
+        console.log(isFriend);
+
         let friendFields = {};
-        friendFields.user = req.params.user_id;
+        friendFields.profile = req.params.profile_id;
         friendFields.status = "Requested";
 
         if (!isFriend) {
@@ -48,21 +50,21 @@ exports.sendFriendRequest = (req, res) => {
     .catch(err => res.status(404).json(err));
 };
 
-// Private Route: 'api/profile/users/:user_id/unfriend'
+// Private Route: 'api/profile/profile_id/unfriend'
 exports.removeFriend = (req, res) => {
   let errors = {};
 
   Profile.findOne({ user: req.user.id })
     .then(profile => {
       if (profile) {
-        let isFriend = !!profile.friends.find(
-          el => el.user.toString() === req.params.user_id
+        let isFriend = profile.friends.find(
+          el => el.profile.toString() === req.params.profile_id
         );
 
         if (isFriend) {
           Profile.findOneAndUpdate(
             { user: req.user.id },
-            { $pull: { friends: { user: req.params.user_id } } },
+            { $pull: { friends: { profile: req.params.profile_id } } },
             { new: true }
           )
             .then(profile => res.json(profile))
