@@ -16,6 +16,7 @@ exports.addRemoveLikeToPost = (req, res) => {
       let likeFields = {};
       likeFields.user = req.user.id;
       likeFields.userName = profile.userName;
+      likeFields.profile = profile._id;
 
       Post.findById(req.params.post_id)
         .then(post => {

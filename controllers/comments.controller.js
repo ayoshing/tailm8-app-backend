@@ -39,6 +39,7 @@ exports.addCommentToPost = (req, res) => {
       commentFields.user = req.user.id;
       commentFields.userName = profile.userName;
       commentFields.content = req.body.content;
+      commentFields.profile = profile._id;
 
       Post.findOneAndUpdate(
         { _id: req.params.post_id },

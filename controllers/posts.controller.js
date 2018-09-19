@@ -63,11 +63,24 @@ exports.updatePost = (req, res) => {
 
 // Private Route: 'api/posts/:post_id'
 exports.deletePost = (req, res) => {
+  const errors = {};
   Profile.findOne({ user: req.user.id }).then(profile => {
     Post.findById(req.params.post_id).then(post => {
-      Post.findOneAndDelete({ user: req.user.id })
-        .then(post => res.json(post))
-        .catch(err => res.status(404).json({ notFound: "No Post" }));
+      Profile.findOne({ user: post.user })
+        .then(posterProfile => {
+          if (profile._id.toString() !== posterProfile._id.toString()) {
+            throw new Error("Unauthorized");
+          } else {
+            Post.findOneAndDelete({ _id: req.params.post_id })
+              .then(post => res.json(post))
+              .catch(err => res.status(404).json({ notFound: "No Post" }));
+          }
+        })
+        .catch(err =>
+          res
+            .status(401)
+            .json({ errors: "Delete failed, post belongs to another user" })
+        );
     });
   });
 };

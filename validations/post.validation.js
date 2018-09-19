@@ -7,6 +7,8 @@ module.exports = function validatePostInput(input) {
 
   input.content = !isEmpty(input.content) ? input.content : "";
 
+  input.imgUrl = !isEmpty(input.imgUrl) ? input.imgUrl : "";
+
   if (!validator.isLength(input.content, { min: 2, max: 200 })) {
     errors.content = "Post must be between 2 and 200 characters";
   }
@@ -15,12 +17,12 @@ module.exports = function validatePostInput(input) {
     errors.content = "Content field is required";
   }
 
-  if (!validator.isURL(input.imgUrl)) {
+  if (!validator.isEmpty(input.imgUrl) && !validator.isURL(input.imgUrl)) {
     errors.imgUrl = "Invalid URL";
   }
 
-  if (!checkURL(input.imgUrl)) {
-    errors.imgUrl = "Invalid URL";
+  if (!validator.isEmpty(input.imgUrl) && !checkURL(input.imgUrl)) {
+    errors.imgUrl = "Invalid URL format";
   }
 
   return {
