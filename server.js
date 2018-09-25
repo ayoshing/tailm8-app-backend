@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const passport = require("passport");
 const cors = require("cors");
-
+const path = require("path");
 const users = require("./routes/api/users.route");
 const profile = require("./routes/api/profile.route");
 const posts = require("./routes/api/posts.route");
@@ -36,9 +36,22 @@ app.use("/api/users", users);
 app.use("/api/profile", profile, friendship);
 app.use("/api/posts", posts, likes, comments);
 
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("tailm8-app-frontend/build"));
+
+  app.get("*", (req, res) => {
+    res.sendFile(
+      path.resolve(__dirname, "tailm8-app-frontend", "build", "index.html")
+    );
+  });
+}
+
 // Server
 const port = process.env.PORT || 3001;
 
-app.listen(port, () =>
+const server = app.listen(port, () =>
   console.log(`CORS-enabled server is running on port ${port}`)
 );
+
+const io = require("socket.io").listen(server);
+require("./sockets/groupchat")(io);

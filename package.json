@@ -6,8 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "nodemon server.js",
-    "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "client": "npm start --prefix tailm8-app-frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix tailm8-app-frontend && npm run build --prefix tailm8-app-frontend"
   },
   "repository": {
     "type": "git",
@@ -31,6 +32,7 @@
     "nodemon": "^1.18.3",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
+    "socket.io": "^2.1.1",
     "validator": "^10.7.1"
   }
 }
