@@ -1,6 +1,7 @@
 import { GET_ERRORS, CLEAR_ERRORS, GET_FRIENDS } from "./types";
+import axios from "axios";
 
-const API_PROFILE_URL = "https://tailm8.herokuapp.com/api/profile";
+const API_PROFILE_URL = "api/profile";
 
 export const requestFriendAction = profileId => dispatch => {
   let config = {
@@ -11,8 +12,15 @@ export const requestFriendAction = profileId => dispatch => {
     }
   };
 
-  return fetch(`${API_PROFILE_URL}/${profileId}/request-friend`, config).then(
-    res => {
+  // return fetch(`${API_PROFILE_URL}/${profileId}/request-friend`, config)
+  return axios
+    .post(`${API_PROFILE_URL}/${profileId}/request-friend`, null, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.jwt
+      }
+    })
+    .then(res => {
       if (res.status === 422 || res.status === 404) {
         res.json().then(json => {
           dispatch({
@@ -23,8 +31,7 @@ export const requestFriendAction = profileId => dispatch => {
       } else {
         res.json().then(json => dispatch(getFriendsList(json)));
       }
-    }
-  );
+    });
 };
 
 export const getFriendsList = json => {

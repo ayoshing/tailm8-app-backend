@@ -8,8 +8,9 @@ import {
   CLEAR_ERRORS,
   CLICK_LIKE
 } from "./types";
+import axios from "axios";
 
-const API_POSTS_URL = "https://tailm8.herokuapp.com/api/posts";
+const API_POSTS_URL = "api/posts";
 
 export const createPostAction = (postData, history) => dispatch => {
   let config = {
@@ -21,28 +22,36 @@ export const createPostAction = (postData, history) => dispatch => {
     body: JSON.stringify(postData)
   };
 
-  return fetch(API_POSTS_URL, config).then(res => {
-    if (res.status === 400) {
-      res.json().then(json => {
-        dispatch({
-          type: GET_ERRORS,
-          payload: json
+  // return fetch(API_POSTS_URL, config)
+  return axios
+    .post(API_POSTS_URL, postData, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.jwt
+      }
+    })
+    .then(res => {
+      if (res.status === 400) {
+        res.json().then(json => {
+          dispatch({
+            type: GET_ERRORS,
+            payload: json
+          });
         });
-      });
-    } else {
-      dispatch(clearErrorsAction());
-      res
-        .json()
-        .then(json => {
-          dispatch(openSnackBarAction("Post Success"));
-          dispatch(closeDialogAction());
-          history.push("/");
-        })
-        .then(json => {
-          dispatch(getPostsAction());
-        });
-    }
-  });
+      } else {
+        dispatch(clearErrorsAction());
+        res
+          .json()
+          .then(json => {
+            dispatch(openSnackBarAction("Post Success"));
+            dispatch(closeDialogAction());
+            history.push("/");
+          })
+          .then(json => {
+            dispatch(getPostsAction());
+          });
+      }
+    });
 };
 
 export const deletePostAction = (postId, history) => dispatch => {
@@ -54,38 +63,42 @@ export const deletePostAction = (postId, history) => dispatch => {
     }
   };
 
-  return fetch(`${API_POSTS_URL}/${postId}`, config).then(res => {
-    if (res.status === 404 || res.status === 401) {
-      res.json().then(json => {
-        dispatch({
-          type: GET_ERRORS,
-          payload: json
+  // return fetch(`${API_POSTS_URL}/${postId}`, config)
+  return axios
+    .delete(`${API_POSTS_URL}/${postId}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.jwt
+      }
+    })
+    .then(res => {
+      if (res.status === 404 || res.status === 401) {
+        res.json().then(json => {
+          dispatch({
+            type: GET_ERRORS,
+            payload: json
+          });
+          dispatch(openSnackBarAction(json.errors));
         });
-        dispatch(openSnackBarAction(json.errors));
-      });
-    } else {
-      dispatch(clearErrorsAction());
-      res
-        .json()
-        .then(json => {
-          dispatch(openSnackBarAction("Post Deleted"));
-          history.push("/");
-        })
-        .then(json => {
-          dispatch(getPostsAction());
-        });
-    }
-  });
+      } else {
+        dispatch(clearErrorsAction());
+        res
+          .json()
+          .then(json => {
+            dispatch(openSnackBarAction("Post Deleted"));
+            history.push("/");
+          })
+          .then(json => {
+            dispatch(getPostsAction());
+          });
+      }
+    });
 };
 
 export const getPostsAction = () => dispatch => {
-  fetch(API_POSTS_URL)
-    // .then(res => {
-    //   if (res.ok) {
-    //     return res.json();
-    //   }
-    //   throw new Error("Unable To Get Posts");
-    // })
+  // fetch(API_POSTS_URL)
+  axios
+    .get(API_POSTS_URL)
     .then(res => res.json())
     .then(json => {
       dispatch({
@@ -131,13 +144,14 @@ export const clickLikeAction = postId => dispatch => {
     }
   };
 
-  fetch(`${API_POSTS_URL}/${postId}/likes`, config)
-    // .then(res => {
-    //   if (res.ok) {
-    //     return res.json();
-    //   }
-    //   throw new Error("Post Error");
-    // })
+  // fetch(`${API_POSTS_URL}/${postId}/likes`, config)
+  axios
+    .post(`${API_POSTS_URL}/${postId}/likes`, null, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.jwt
+      }
+    })
     .then(res => res.json())
     .then(json => dispatch(getPostsAction()));
 };

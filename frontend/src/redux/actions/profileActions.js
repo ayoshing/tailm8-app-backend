@@ -5,8 +5,9 @@ import {
   CLOSE_MENU_DRAWER,
   GET_ERRORS
 } from "./types";
+import axios from "axios";
 
-const API_PROFILE_URL = "https://tailm8.herokuapp.com/api/profile";
+const API_PROFILE_URL = "api/profile";
 
 export const createProfile = (profileData, history) => dispatch => {
   let config = {
@@ -18,7 +19,14 @@ export const createProfile = (profileData, history) => dispatch => {
     body: JSON.stringify(profileData)
   };
 
-  fetch(API_PROFILE_URL, config)
+  // fetch(API_PROFILE_URL, config)
+  axios
+    .post(API_PROFILE_URL, profileData, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.jwt
+      }
+    })
     .then(res => res.json())
     .then(json => {
       dispatch({
@@ -39,34 +47,28 @@ export const getCurrentProfileAction = userId => dispatch => {
     }
   };
 
-  fetch(API_PROFILE_URL, config)
-    // .then(res => {
-    //   if (res.ok) {
-    //     return res.json();
-    //   }
-    //   throw new Error("Get profile error");
-    // })
-    .then(res => {
-      if (res.status === 404 || res.status === 400) {
-        res.json().then(json => {
-          dispatch({
-            type: GET_ERRORS,
-            payload: json
-          });
-          dispatch({
-            type: GET_PROFILE,
-            payload: {}
-          });
+  // fetch(API_PROFILE_URL, config)
+  axios.get(API_PROFILE_URL, config).then(res => {
+    if (res.status === 404 || res.status === 400) {
+      res.json().then(json => {
+        dispatch({
+          type: GET_ERRORS,
+          payload: json
         });
-      } else {
-        res.json().then(json =>
-          dispatch({
-            type: GET_PROFILE,
-            payload: json
-          })
-        );
-      }
-    });
+        dispatch({
+          type: GET_PROFILE,
+          payload: {}
+        });
+      });
+    } else {
+      res.json().then(json =>
+        dispatch({
+          type: GET_PROFILE,
+          payload: json
+        })
+      );
+    }
+  });
 };
 
 export const profileLoadingAction = () => {

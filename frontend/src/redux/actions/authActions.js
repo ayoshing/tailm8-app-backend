@@ -2,8 +2,9 @@ import { GET_ERRORS, SET_CURRENT_USER, RESET } from "./types";
 import jwtDecode from "jwt-decode";
 import { getCurrentProfileAction } from "./profileActions";
 import { getPostsAction } from "./postActions";
+import axios from "axios";
 
-const API_USERS_URL = "https://tailm8.herokuapp.com/api/users";
+const API_USERS_URL = "api/users";
 
 export const signUpUser = (userData, history) => dispatch => {
   let config = {
@@ -14,7 +15,8 @@ export const signUpUser = (userData, history) => dispatch => {
     body: JSON.stringify(userData)
   };
 
-  fetch(API_USERS_URL, config).then(res => {
+  // fetch(API_USERS_URL, config)
+  axios.post(API_USERS_URL, userData).then(res => {
     if (res.status === 400) {
       res.json().then(json =>
         dispatch({
@@ -37,7 +39,9 @@ export const logInUser = (userData, history) => dispatch => {
     body: JSON.stringify(userData)
   };
 
-  fetch(`${API_USERS_URL}/login`, config)
+  // fetch(`${API_USERS_URL}/login`, config)
+  axios
+    .post(`${API_USERS_URL}/login`, userData)
     .then(res => res.json())
     .then(json => {
       if (json.token) {
@@ -65,13 +69,9 @@ export const getCurrentUser = () => dispatch => {
     }
   };
 
-  fetch(`${API_USERS_URL}/current`, config)
-    // .then(res => {
-    //   if (res.ok) {
-    //     return res.json();
-    //   }
-    //   throw new Error("Can't fetch current user");
-    // })
+  // fetch(`${API_USERS_URL}/current`, config)
+  axios
+    .get(`${API_USERS_URL}/current`, config)
     .then(res => res.json())
     .then(json => dispatch(setCurrentUser(json)));
 };

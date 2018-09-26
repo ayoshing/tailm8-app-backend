@@ -5,8 +5,9 @@ import {
   CLEAR_ERRORS
 } from "./types";
 import { openSnackBarAction, getPostsAction } from "./postActions";
+import axios from "axios";
 
-const API_POSTS_URL = "https://tailm8.herokuapp.com/api/posts";
+const API_POSTS_URL = "api/posts";
 
 export const createCommentAction = (
   commentData,
@@ -22,27 +23,35 @@ export const createCommentAction = (
     body: JSON.stringify(commentData)
   };
 
-  return fetch(`${API_POSTS_URL}/${postId}/comments`, config).then(res => {
-    if (res.status === 400) {
-      res.json().then(json => {
-        dispatch({
-          type: GET_ERRORS,
-          payload: json
+  // return fetch(`${API_POSTS_URL}/${postId}/comments`, config)
+  return axios
+    .post(`${API_POSTS_URL}/${postId}/comments`, commentData, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.jwt
+      }
+    })
+    .then(res => {
+      if (res.status === 400) {
+        res.json().then(json => {
+          dispatch({
+            type: GET_ERRORS,
+            payload: json
+          });
         });
-      });
-    } else {
-      dispatch({
-        type: CLEAR_ERRORS
-      });
-      res
-        .json()
-        .then(json => {
-          dispatch(openSnackBarAction("Comment Added"));
-          dispatch(closeCommentDialogAction());
-        })
-        .then(json => dispatch(getPostsAction()));
-    }
-  });
+      } else {
+        dispatch({
+          type: CLEAR_ERRORS
+        });
+        res
+          .json()
+          .then(json => {
+            dispatch(openSnackBarAction("Comment Added"));
+            dispatch(closeCommentDialogAction());
+          })
+          .then(json => dispatch(getPostsAction()));
+      }
+    });
 };
 
 export const openCommentDialogAction = postId => {
