@@ -37,13 +37,13 @@ app.use("/api/users", users);
 app.use("/api/profile", profile, friendship);
 app.use("/api/posts", posts, likes, comments);
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static("frontend/build"));
-
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"));
-  });
-}
+// if (process.env.NODE_ENV === "production") {
+//   app.use(express.static("frontend/build"));
+//
+//   app.get("*", (req, res) => {
+//     res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"));
+//   });
+// }
 
 // Server
 const port = process.env.PORT || 3001;
