@@ -1,6 +1,6 @@
 import { GET_ERRORS, CLEAR_ERRORS, GET_FRIENDS } from "./types";
 
-const API_PROFILE_URL = "http://localhost:3001/api/profile";
+const API_PROFILE_URL = "https://tailm8.herokuapp.com/api/profile";
 
 export const requestFriendAction = profileId => dispatch => {
   let config = {

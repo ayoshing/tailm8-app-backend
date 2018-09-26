@@ -3,7 +3,7 @@ import jwtDecode from "jwt-decode";
 import { getCurrentProfileAction } from "./profileActions";
 import { getPostsAction } from "./postActions";
 
-const API_USERS_URL = "http://localhost:3001/api/users";
+const API_USERS_URL = "https://tailm8.herokuapp.com/api/users";
 
 export const signUpUser = (userData, history) => dispatch => {
   let config = {

@@ -9,7 +9,7 @@ import {
   CLICK_LIKE
 } from "./types";
 
-const API_POSTS_URL = "http://localhost:3001/api/posts";
+const API_POSTS_URL = "https://tailm8.herokuapp.com/api/posts";
 
 export const createPostAction = (postData, history) => dispatch => {
   let config = {
