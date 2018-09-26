@@ -4,13 +4,14 @@
   "description": "",
   "main": "server.js",
   "engines": {
-    "node": "9.10.1"
+    "node": "9.10.1",
+    "npm": "6.4.0"
   },
   "scripts": {
     "server": "nodemon server.js",
     "client": "npm start --prefix tailm8-app-frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "heroku-postbuild": "npm install --prefix \"tailm8-app-frontend\" && npm run build --prefix \"tailm8-app-frontend\""
+    "heroku-postbuild": "npm install --prefix tailm8-app-frontend && npm run build --prefix tailm8-app-frontend"
   },
   "repository": {
     "type": "git",
