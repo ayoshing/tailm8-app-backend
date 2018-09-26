@@ -1,6 +1,5 @@
 const validator = require("validator");
 const isEmpty = require("./isEmpty");
-const checkURL = require("./checkURL");
 
 module.exports = function validatePostInput(input) {
   let errors = {};
@@ -19,10 +18,6 @@ module.exports = function validatePostInput(input) {
 
   if (!validator.isEmpty(input.imgUrl) && !validator.isURL(input.imgUrl)) {
     errors.imgUrl = "Invalid URL";
-  }
-
-  if (!validator.isEmpty(input.imgUrl) && !checkURL(input.imgUrl)) {
-    errors.imgUrl = "Invalid URL format";
   }
 
   return {
