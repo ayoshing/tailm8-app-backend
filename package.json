@@ -9,9 +9,9 @@
   },
   "scripts": {
     "server": "nodemon server.js",
-    "client": "npm start --prefix tailm8-app-frontend",
+    "client": "npm start --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "heroku-postbuild": "npm install --prefix tailm8-app-frontend && npm run build --prefix tailm8-app-frontend"
+    "heroku-postbuild": "npm install --prefix frontend && npm run build --prefix frontend"
   },
   "repository": {
     "type": "git",
