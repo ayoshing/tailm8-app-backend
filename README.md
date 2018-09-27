@@ -8,6 +8,9 @@ I wanted my dogs to have fun too, so I created TailM8, an online network catered
 
 This project will be an ongoing project, with new features to be added and improvements to be made. TailM8 was built with the MERN stack, using Node.js + Express for the backend to allow real-time data connections and modularity. The frontend uses React and Redux, so that I can create reusable components and also take advantage of React's Virtual DOM for efficiency reasons.
 
+- Website: http://tailm8.surge.sh/
+- API: https://tailm8-api.herokuapp.com/
+
 ## Installation
 
 ```sh
