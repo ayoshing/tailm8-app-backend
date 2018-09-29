@@ -24,8 +24,6 @@ exports.getPostComment = (req, res) => {
     .catch(err => console.log(err));
 };
 
-// Public Route: '/api/posts/:post_id/comments/:comment_id'
-
 // Private Route: '/api/posts/:post_id/comments'
 exports.addCommentToPost = (req, res) => {
   const { errors, isValid } = validateCommentInput(req.body);

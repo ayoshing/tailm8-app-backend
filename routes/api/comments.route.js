@@ -5,7 +5,6 @@ const commentController = require("../../controllers/comments.controller");
 // Public Routes
 router.get("/:post_id/comments", commentController.getPostComments);
 router.get("/:post_id/comments/:comment_id", commentController.getPostComment);
-// router.get('/comments'), commentController.getComments);
 
 // Private Routes
 router.post(
